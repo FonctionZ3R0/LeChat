@@ -8,6 +8,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import Question from './src/components/Question';
+import 'react-native-url-polyfill/auto';
 import {
   SafeAreaView,
   ScrollView,

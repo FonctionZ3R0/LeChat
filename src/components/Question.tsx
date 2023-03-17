@@ -1,43 +1,32 @@
 import React, { useState } from 'react'
-import {Text, View, Button} from 'react-native'
+import {Text, View, Button, TextInput} from 'react-native'
+import { Configuration, OpenAIApi } from 'openai';
 
 const Question = () => {
 
+    const [question, setQuestion] = useState('');
     const [response, setResponse] = useState('');
 
+    const apiKey = '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';
+    const organization = 'org-ohBgHBDm8dN5nZCiRYIsCq5n';
+
     const handleApiRequest = async () => {
-        try {
-            const apiKey = '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';
-            const prompt = 'Write a recipe';
-            const engine = 'davinci';
-            const apiUrl = `https://api.openai.com/v1/engines/${engine}/completions`;
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify({
-                prompt: prompt,
+         try {
+            const configuration = new Configuration({
+                apiKey: apiKey,
+                organization: organization,
+            });
+            const openai = new OpenAIApi(configuration);
+            
+            const getAnswer = await openai.createChatCompletion({
+                model: "gpt-3.5-turbo",
+                messages: [{"role": "user", "content": question}],
                 max_tokens: 100,
-                n: 1,
-                stop: ['\n'],
             })
-            };
-            const response = await fetch(apiUrl, requestOptions);
-        if (!response.ok) {
-            console.log(response)
-            throw new Error('API request failed');
+
+        if (getAnswer) {
+            setResponse(getAnswer.data.choices[0].message?.content)
         }
-        const data = await response.json();
-        if (!data.choices || !data.choices.length) {
-            throw new Error('No completion choices available');
-        }
-        const text = data.choices[0].text;
-        if (!text) {
-            throw new Error('Completion text is undefined');
-        }
-        setResponse(text);
         } catch (error) {
             console.error(error);
         }
@@ -45,8 +34,9 @@ const Question = () => {
   
     return (
       <View>
-        <Button title="Make API Request" onPress={handleApiRequest} />
         <Text>{response}</Text>
+        <TextInput onChangeText={setQuestion} value={question} placeholder="Une question pour LeChat"/>
+        <Button title="Make API Request" onPress={handleApiRequest} />
       </View>
     );
   };
