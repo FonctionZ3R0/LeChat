@@ -1,56 +1,44 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useState } from 'react';
-import type {PropsWithChildren} from 'react';
 import Question from './src/components/Question';
 import 'react-native-url-polyfill/auto';
-import {
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
+import {ImageBackground, StyleSheet, View,} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import History from './src/components/History';
 
 
 function App(): JSX.Element {
 
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState([{"role": "system", "content": "Sur quoi se porte ta curiosité aujourd'hui ?"}])
+
+  const handleUpdateHistory = (value: {role: string, content: string}) => {
+    // setHistory(prevHistory => [...prevHistory, value]) mon cul ta fonction de copie de mort qui copie R
+    setHistory(prevHistory => [...prevHistory, value])
+    history.push(value)
+  }
+
+  const img = {uri: 'https://w0.peakpx.com/wallpaper/82/215/HD-wallpaper-cartoon-dark-black-simple-thumbnail.jpg'}
 
   return (
-    <View
-      style={{
-        backgroundColor: Colors.dark,
-      }}>
-      <History history={history}/>
-      <Question history={history} setHistory={setHistory}/>
+    <View style={styles.container}>
+      <ImageBackground source={img} style={styles.history}>
+        <History history={history}/>
+      </ImageBackground>
+      <Question history={history} handleUpdateHistory={handleUpdateHistory}/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: Colors.dark,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  history: {
+    flex: 5
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '600',
+  question: {
+    flex: 1
   },
 });
 
