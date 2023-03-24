@@ -32,7 +32,7 @@ const History = (props) => {
 const styles = StyleSheet.create({
     container: {},
     iaBubble: {
-        backgroundColor: "#dedede",
+        backgroundColor: "#3b3b3b",
         padding:10,
         borderRadius: 5,
         marginTop: 5,
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
         //padding: 14,
         //alignItems:"center",
         borderRadius: 13,
-        marginBottom: 8,
+        marginBottom: 5,
     },
     myBubble: {
-        backgroundColor: "#0078fe",
+        backgroundColor: "#3770CC",
         padding:10,
         borderRadius: 13,
         //marginBottom: 15,
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
         marginRight: "5%",
         maxWidth: '70%',
         alignSelf: 'flex-end',
-        marginBottom: 8,
+        marginBottom: 5,
         //maxWidth: 500,
     },
     iaText: {
         fontSize: 16, 
-        color: "#000",
+        color: "#fff",
         justifyContent:"center"
     },
     myText: {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     },
     rightArrow: {
         position: "absolute",
-        backgroundColor: "#0078fe",
+        backgroundColor: "#3770CC",
         width: 20,
         height: 25,
         bottom: 0,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     },
     leftArrow: {
         position: "absolute",
-        backgroundColor: "#dedede",
+        backgroundColor: "#3b3b3b",
         width: 20,
         height: 25,
         bottom: 0,
