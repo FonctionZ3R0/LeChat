@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {View, TextInput, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import { Configuration, OpenAIApi } from 'openai'
 
-const Question = ({history, handleUpdateHistory}) => {
+const Question = ({history, handleUpdateHistory, setIsLoaderVisible}) => {
 
   const [question, setQuestion] = useState('');
   const [isTouchable, setTouchable] = useState(true);
@@ -11,23 +11,23 @@ const Question = ({history, handleUpdateHistory}) => {
   const handleApiRequest = async () => {
     try {
       setTouchable(false)
+      setIsLoaderVisible(true)
       handleUpdateHistory({"role": "user", "content": question})
       setQuestion('')
       
       const configuration = new Configuration({
-          apiKey: vars.REACT_APP_APIKEY,
-          organization: vars.REACT_APP_ORGANIZATION,
+          apiKey: vars.REACT_APP_APIKEY
       });
 
       const openai = new OpenAIApi(configuration);
 
       const getAnswer = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
+          model: "gpt-4",
           messages: history,
-          max_tokens: 1000,
       })
 
       if (getAnswer) {
+        setIsLoaderVisible(false)
         console.log({"role": getAnswer.data.choices[0].message?.role, "content": getAnswer.data.choices[0].message?.content})
         handleUpdateHistory({"role": getAnswer.data.choices[0].message?.role, "content": getAnswer.data.choices[0].message?.content})
         setTouchable(true)

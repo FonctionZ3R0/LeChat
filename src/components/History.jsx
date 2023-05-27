@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native"
+import Loader from './Loader'
 
 const History = (props) => {
 
+    const flatListRef = useRef();
+
+    useEffect(() => {
+        if (flatListRef.current) {
+          flatListRef.current.scrollToEnd({ animated: true });
+        }
+    }, [props]);
+
     return (
         <View>
+            <Loader isLoaderVisible={props.isLoaderVisible}/>
             {props.history.length > 0 ? (<FlatList
+                ref={flatListRef}
                 data={props.history}
+                style={styles.container}
                 renderItem={({item}) => (
                 <View>
                     {item.role == 'system' || item.role == 'assistant' ?
@@ -30,7 +42,9 @@ const History = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+        marginBottom: 55,
+    },
     iaBubble: {
         backgroundColor: "#3b3b3b",
         padding:10,
